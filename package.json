@@ -1,0 +1,38 @@
+{
+  "dependencies": {
+    "body-parser": "1.19.0",
+    "config": "^3.3.6",
+    "dotenv": "^10.0.0",
+    "express": "5.0.0-alpha.8",
+    "mongodb": "^3.6.10",
+    "mongoose": "5.13.5",
+    "morgan": "^1.10.0",
+    "validate-model": "^0.0.2",
+    "validator": "^5.0.0"
+  },
+  "name": "udemyapi",
+  "version": "1.0.0",
+  "description": "api with crud functionality",
+  "main": "index.js",
+  "scripts": {
+    "Dev": "nodemon index.js",
+    "Prod": "NODE_ENV=production nodemon index.js"
+  },
+  "keywords": [
+    "update",
+    "delete",
+    "get",
+    "post",
+    "api"
+  ],
+  "author": "alina",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
+    "nodemon": "^2.0.12",
+    "prettier": "^2.3.2"
+  }
+}

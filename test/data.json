@@ -1,0 +1,79 @@
+[
+  {
+    "title" : "Item number one",
+    "slug" : "slug number one",
+    "price" : 100,
+    "description": "description for the first item"
+  },
+  {
+    "title" : "Item number two",
+    "slug" : "slug number two",
+    "price" : 200,
+    "description": "description for the second item"
+  },
+  {
+    "title" : "Item number three",
+    "slug" : "slug number three",
+    "price" : 300,
+    "description": "description for the third item"
+  },
+  {
+    "title" : "Item number for",
+    "slug" : "slug number for",
+    "price" : 400,
+    "description": "description for the forth item"
+  },
+  {
+    "title" : "Item number five",
+    "slug" : "slug number five",
+    "price" : 500,
+    "description": "description for the fifth item"
+  },
+  {
+    "title" : "Item number six",
+    "slug" : "slug number six",
+    "price" : 600,
+    "description": "description for the sixth item"
+  },
+  {
+    "title" : "Item number seven",
+    "slug" : "slug number seven",
+    "price" : 700,
+    "description": "description for the seventh item"
+  },
+  {
+    "title" : "Item number eight",
+    "slug" : "slug number eight",
+    "price" : 800,
+    "description": "description for the eighth item"
+  },
+  {
+    "title" : "Item number nine",
+    "slug" : "slug number nine",
+    "price" : 900,
+    "description": "description for the ninth item"
+  },
+  {
+    "title" : "Item number ten",
+    "slug" : "slug number ten",
+    "price" : 1000,
+    "description": "description for the tenth item"
+  },
+  {
+
+  },
+  {
+    "title" : "",
+    "slug" : "",
+    "price" : 0,
+    "description": ""
+  }
+]
+
+{
+  "name" : "alina",
+  "email" : "al.el.en.lina@gmail.com",
+  "password" : "pass1234",
+  "photo" : "",
+  "passwordConfirm" : "pass1234"
+}

@@ -1,0 +1,60 @@
+________________________________________________________________________________________________________________________
+|//////////////////////////////////////////      basic shell commands     /////////////////////////////////////////////|
+|//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////|
+|                                                                                                                      |
+| use nameOfTheDatabase // switch to an existing database or create a new one if the name we pas does not exist        |
+|                                                                                                                      |
+| db.tours.insertOne({ name: "The forest Hiker", price: 297, rating: 4.7}) // create one document in the database      |
+|                                                                                                                      |
+| db is the current database                                                                                           |
+|                                                                                                                      |
+| db.tours.find() - returns the full document                                                                          |
+|                                                                                                                      |
+| show dbs - show all databases                                                                                        |
+|                                                                                                                      |
+| quit() exit the mongo shell                                                                                          |
+|                                                                                                                      |
+| mongo runs mongo shell                                                                                               |
+|                                                                                                                      |
+|//////////////////////////////////////          crud operation         ///////////////////////////////////////////////|
+|                                                                                                                      |
+| db.tours.insertMany( [ { name: "The forest Hiker1", price: 2971, rating: 4.71 },                                     |
+|                       { name: "The forest Hiker"2, price: 2972, rating: 4.72 } ] )                                   |
+|    //this function take as an argument an array of json objects and insert them into database                        |
+|                                                                                                                      |
+| db.tours.find({name: "The Forest Hiker"}) - we pass a filter object, and we get all documents that correspond with   |
+|                                                the filter object                                                     |
+| db.tours.find( {price: {$lte: 500}} ) // lte stands for less than and equal                                          |
+| db.tours.find( {price: {$lt:  500}, rating: {$gte: 4.8} }) // price less than 500 and rating grater than 4.8         |
+| db.tours.find({ $or: [{price: {$lt: 400}}, {rating: {$gt: 3}}] })                                                    |
+|   // we search for documents with price less than 400 or rating grater than 3                                        |
+|                                                                                                                      |
+|                                                                                                                      |
+| db.tours.find( { $or: [{prise: {$lt: 400}}, {prise: {$gte: 10000}}]}, {name: 1})                                     |
+|   // we search for documents with prise less than 400 or grater than 10000                                           |
+|   // and display only the name and id of these records                                                               |
+|                                                                                                                      |
+|                                                                                                                      |
+|//////////////////////////////////////        updating documents         /////////////////////////////////////////////|
+|                                                                                                                      |
+| db.tours.updateOne( {name: "The Forest Hiker"}, { $set: { price: 5000}} )                                            |
+|    // this will update the record with this name with the parameters from the second argument                        |
+|                                                                                                                      |
+| db.tours.updateMany( {price: {$lt:  500}, rating: {$gte: 4.8}}, {$set: premium : true})                              |
+|    //this will update all records with the price less than 500 and with rating grater than 4.8 with parameters from  |
+|      // the second argument                                                                                          |
+|                                                                                                                      |
+| db.tours.replaceOne()                                                                                                |
+| db.tours.replaceMany()                                                                                               |
+|    // this will completely modify the recordings and the parameters are the same as in update function               |
+|                                                                                                                      |
+|////////////////////////////////////////      deleting documents       ///////////////////////////////////////////////|
+|                                                                                                                      |
+| db.tours.deleteOne({id: 123456789})                                                                                  |
+|    //this will delete the record with this id                                                                        |
+|                                                                                                                      |
+| db.tours.deleteMany({})                                                                                              |
+|    //this will delete all records                                                                                    |
+|                                                                                                                      |
+|          !!!!!!!!!!!! we can not undo the delete action                                                              |
+|______________________________________________________________________________________________________________________|
