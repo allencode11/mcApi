@@ -69,11 +69,3 @@
     "description": ""
   }
 ]
-
-{
-  "name" : "alina",
-  "email" : "al.el.en.lina@gmail.com",
-  "password" : "pass1234",
-  "photo" : "",
-  "passwordConfirm" : "pass1234"
-}
