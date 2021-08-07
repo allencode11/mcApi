@@ -12,6 +12,10 @@ const userSchema = new mongoose.Schema({
     unique: true,
     lowercase: true,
   },
+  role: {
+    type: String,
+    lowercase: true,
+  },
   password: {
     type: String,
     required: [true, 'please tell us your name'],

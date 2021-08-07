@@ -10,6 +10,7 @@ module.exports.createUser = async (req, res) => {
     email: userObj.email,
     password: userObj.password,
     photo: userObj.photo,
+    role: userObj.role,
     passwordConfirm: userObj.passwordConfirm,
   });
 
@@ -67,6 +68,7 @@ module.exports.updateUser = async (req, res) => {
         email: req.body.email,
         password: req.body.password,
         photo: req.body.photo,
+        role: req.body.role,
         passwordConfirm: req.body.passwordConfirm,
       },
     },
