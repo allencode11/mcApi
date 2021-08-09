@@ -1,6 +1,35 @@
+// dependencies
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
+
+/**
+ * @api {get} /users/:id Request User information
+ * @apiName GetUser
+ * @apiGroup User
+ *
+ * @apiParam {Number} id Users unique ID.
+ *
+ * @apiSuccess {String} name name of the User.
+ * @apiSuccess {String} email  email of the User.
+ * @apiSuccess {String} password  password of the User.
+ * @apiSuccess {String} role  role of the User.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "firstname": "John",
+ *       "lastname": "Doe"
+ *     }
+ *
+ * @apiError UserNotFound The id of the User was not found.
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "UserNotFound"
+ *     }
+ */
 
 // eslint-disable-next-line consistent-return
 module.exports.register = async (req, res) => {

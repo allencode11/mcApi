@@ -58,7 +58,7 @@ authUtils.isClient = function (req, res, next) {
 
 authUtils.isNotClient = function (req, res, next) {
   if (req.role === 'client') {
-    return res.send(403);
+    return res.status(403).json({ message: 'access denied' });
   }
   return next();
 };
