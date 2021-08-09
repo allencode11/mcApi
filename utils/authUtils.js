@@ -19,13 +19,9 @@ authUtils.isAuthenticated = function (req, res, next) {
     if (token.includes('Bearer')) {
       const jwtToken = token.split(' ')[1];
 
+      console.log(jwtToken);
       // eslint-disable-next-line consistent-return
       jwt.verify(jwtToken, process.env.TOKEN_KEY, (err, parsedToken) => {
-        if (Date.now() >= parsedToken.exp * 1000) {
-          return res.status(400).json({ message: 'token has expired' });
-        }
-        console.log(parsedToken);
-
         req.role = parsedToken.role;
         req.user_id = parsedToken.id;
         next();

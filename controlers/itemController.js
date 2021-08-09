@@ -4,7 +4,7 @@ module.exports.createItem = async (req, res) => {
   const itemObj = req.body;
 
   const item = new Item({
-    owner: req.user_id,
+    owner: req.email,
     title: itemObj.title,
     slug: itemObj.slug,
     price: itemObj.price,
