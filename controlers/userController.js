@@ -1,41 +1,5 @@
 const User = require('../models/userModel');
 
-module.exports.createUser = async (req, res) => {
-  const userObj = req.body;
-
-  console.log(userObj);
-
-  const user = new User({
-    name: userObj.name,
-    email: userObj.email,
-    password: userObj.password,
-    photo: userObj.photo,
-    role: userObj.role,
-    passwordConfirm: userObj.passwordConfirm,
-  });
-
-  await user.save((err) => {
-    if (err) {
-      console.error(err);
-      console.log('error while saving');
-    }
-  });
-
-  res.send({
-    status: 'success',
-    message: 'Created',
-  });
-};
-
-module.exports.deleteUser = async (req, res) => {
-  await User.deleteOne({ _id: req.params.id });
-
-  res.status(200).json({
-    status: 'success',
-    message: 'deleted',
-  });
-};
-
 module.exports.getAllUsers = async (req, res) => {
   const users = await User.find();
 
@@ -45,6 +9,15 @@ module.exports.getAllUsers = async (req, res) => {
     data: {
       users,
     },
+  });
+};
+
+module.exports.deleteUser = async (req, res) => {
+  console.log(req.body.id);
+  await User.deleteOne({ id: req.body.id });
+
+  res.status(200).json({
+    status: 'success',
   });
 };
 

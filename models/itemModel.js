@@ -7,6 +7,9 @@ const itemSchema = new mongoose.Schema({
     type: String,
     required: [true, 'An item must have a name'],
   },
+  owner: {
+    type: String,
+  },
   slug: {
     type: String,
     required: [true, 'this is an required field'],

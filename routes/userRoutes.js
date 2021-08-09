@@ -1,18 +1,29 @@
 // dependencies
 const express = require('express');
+const authUtil = require('../utils/authUtils');
 const userController = require('../controlers/userController');
 const authController = require('../controlers/authController');
 
 const router = express.Router();
 
-router.post('/signup', authController.signup);
-router.post('/signin', authController.signin);
-router.post('/logout', authController.logout);
+// only admins can creat new accounts
+router.post('/register', authUtil.isAuthenticated, authUtil.isAdmin, authController.register);
 
-// get an user and create a new one
-router.route('/').get(userController.getAllUsers).post(userController.createUser);
+// everyone can login
+router.post('/login', authController.signin);
 
-// update, delete, patch an user
-router.route('/:id').delete(userController.deleteUser).patch(userController.updateUser).get(userController.getUser);
+// only logged users can logout
+router.post('/logout', authUtil.isAuthenticated, authController.logout);
+
+// Admin can get an user and create a new one
+router.route('/').get(authUtil.isAuthenticated, authUtil.isAdmin().getAllUsers);
+
+// Admin can update, delete and get an user
+router
+  .route('/:id')
+  .patch(authUtil.isAuthenticated, authUtil.isAdmin, userController.updateUser)
+  .get(authUtil.isAuthenticated, authUtil.isAdmin, userController.getUser)
+  .delete(authUtil.isAuthenticated, userController.deleteUser)
+  .post(authUtil.isAuthenticated, userController.deleteUser); // for reset password
 
 module.exports = router;

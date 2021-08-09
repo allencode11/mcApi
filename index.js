@@ -9,23 +9,26 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
+const jwt = require('jsonwebtoken');
 
+// connecting with routers
 const itemRouter = require('./routes/itemRoutes');
 const userRouter = require('./routes/userRoutes');
 
-const port = process.env.PORT || 8000;
+// using environments
+dotenv.config();
+
+const port = process.env.PORT || 3000;
 
 // creating the app
 const app = express();
 
-// connectionString
-const mongoStr = 'mongodb://localhost:27016';
-
 // connect to database
-mongoose.connect(mongoStr, { useUnifiedTopology: true }).catch((err) => console.log(err));
-
-// connecting with config file
-dotenv.config({ path: './config.env' });
+mongoose
+  .connect(process.env.MONGO_CONN_STR, {
+    useUnifiedTopology: true,
+  })
+  .catch((err) => console.log(err));
 
 // middlewares
 app.use(morgan('dev'));
@@ -38,4 +41,19 @@ app.use('/users', userRouter);
 
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
+});
+
+app.post('/api/login', (req, res) => {
+  const user = {
+    email: 'alina.enache@gmail.com',
+    name: 'alina',
+    photo: '',
+    password: '1234pass',
+  };
+
+  jwt.sign({ user }, 'secretkey', (err, token) => {
+    res.json({
+      token,
+    });
+  });
 });

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 // name, email, photo, password, passwordConform
 const userSchema = new mongoose.Schema({
@@ -15,6 +16,7 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     lowercase: true,
+    default: 'client',
   },
   password: {
     type: String,
