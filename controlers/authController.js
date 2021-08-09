@@ -34,6 +34,7 @@ module.exports.register = async (req, res) => {
       role,
       email: email.toLowerCase(), // sanitize: convert email to lowercase
       password: encryptedPassword,
+      passwordConfirm: encryptedPassword,
     });
 
     // Create token

@@ -7,10 +7,9 @@ const authUtils = () => {};
 // function for verifying if the user use a valid token
 // eslint-disable-next-line consistent-return
 authUtils.isAuthenticated = function (req, res, next) {
-  console.log(req);
   if (req.headers.authorization) {
     const token = req.headers.authorization;
-    console.log(token);
+
     if (token === 'undefined') {
       return res.status(400).json({
         status: 'error',
@@ -22,10 +21,11 @@ authUtils.isAuthenticated = function (req, res, next) {
 
       // eslint-disable-next-line consistent-return
       jwt.verify(jwtToken, process.env.TOKEN_KEY, (err, parsedToken) => {
-        console.log(parsedToken);
         if (Date.now() >= parsedToken.exp * 1000) {
           return res.status(400).json({ message: 'token has expired' });
         }
+        console.log(parsedToken);
+
         req.role = parsedToken.role;
         req.user_id = parsedToken.id;
         next();
