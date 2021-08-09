@@ -4,31 +4,30 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/userModel');
 
 /**
- * @api {get} /users/:id Request User information
- * @apiName GetUser
- * @apiGroup User
- *
- * @apiParam {Number} id Users unique ID.
+ * @api {post} /users/register Register a new user
+ * @apiName register
+ * @apiGroup Users
  *
  * @apiSuccess {String} name name of the User.
  * @apiSuccess {String} email  email of the User.
  * @apiSuccess {String} password  password of the User.
  * @apiSuccess {String} role  role of the User.
+ * @apiSuccess {String} token  token for new User.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
- *     {
- *       "firstname": "John",
- *       "lastname": "Doe"
- *     }
+ *  {
+    "status": "success",
+    "message": "created",
+    }
  *
- * @apiError UserNotFound The id of the User was not found.
+ * @apiError AccessDenied Users does not have the permissions for this route.
  *
  * @apiErrorExample Error-Response:
- *     HTTP/1.1 404 Not Found
+ *     HTTP/1.1 403 AccessDenied
  *     {
- *       "error": "UserNotFound"
- *     }
+            "message": "not an admin"
+      }
  */
 
 // eslint-disable-next-line consistent-return
@@ -82,6 +81,41 @@ module.exports.register = async (req, res) => {
   }
 };
 
+/**
+ * @api {post} /users/login Authenticate an user
+ * @apiName signin
+ * @apiGroup Users
+ *
+ * @apiSuccess {String} name name of the User.
+ * @apiSuccess {String} email  email of the User.
+ * @apiSuccess {String} password  password of the User.
+ * @apiSuccess {String} role  role of the User.
+ * @apiSuccess {String} token  token for new User.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *  {
+    "user": {
+        "_id": "61110f70c0fd768585a3b2e9",
+        "name": "vendor",
+        "photo": "adds",
+        "role": "vendor",
+        "email": "alina.enache1@gmail.com",
+        "password": "$2a$10$FMmhUf1lpQ7fREORyl/BueBmSdMR02RUpoMi76FoSvGaw5qc6b/CO",
+        "passwordConfirm": "$2a$10$FMmhUf1lpQ7fREORyl/BueBmSdMR02RUpoMi76FoSvGaw5qc6b/CO",
+        "__v": 0
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjExMTBmNzBjMGZkNzY4NTg1YTNiMmU5IiwiZW1haWwiOiJhbGluYS5lbmFjaGUxQGdtYWlsLmNvbSIsInJvbGUiOiJ2ZW5kb3IiLCJpYXQiOjE2Mjg1MDg0MTAsImV4cCI6MTYyODUxNTYxMH0.pLqw4LB4VGQsCEI45vIdk77QLf87cQMIdibdml4vB2o"
+}
+ *
+ * @apiError notFound Could not find a user with this credentials.
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 403 Not Found
+ *     {
+            "message": "not found"
+      }
+ */
 module.exports.signin = async (req, res) => {
   try {
     // Get user input
@@ -117,6 +151,26 @@ module.exports.signin = async (req, res) => {
     console.log(err);
   }
 };
+
+/**
+ * @api {get} /users/logout Logout an user
+ * @apiName logout
+ * @apiGroup Users
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *  {
+    "message": "Successfully lodged out",
+    }
+ *
+ * @apiError couldNotDestroyToken Could not destroy jwt token.
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 400 error
+ *     {
+            "message": "Could not destroy jwt token",
+      }
+ */
 
 module.exports.logout = async (req, res) => {
   const newUser = await User.create(req.body);

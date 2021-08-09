@@ -1,6 +1,54 @@
+// dependencies
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
+
+/**
+ * @api {get} /users Request User information
+ * @apiName GetAllUsers
+ * @apiGroup Users
+
+ * @apiSuccess {String} name name of the User.
+ * @apiSuccess {String} email  email of the User.
+ * @apiSuccess {String} password  password of the User.
+ * @apiSuccess {String} role  role of the User.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *  {
+    "status": "success",
+    "results": 2,
+    "data": {
+        "items": [
+            {
+                "_id": "6110ebbeb030da6d0cdd9b1a",
+                "title": "Item number ten",
+                "slug": "slug number ten",
+                "price": 1000,
+                "description": "description for the tenth item",
+                "__v": 0
+            },
+            {
+                "_id": "61110e90fab753848776b398",
+                "title": "Item number ten12",
+                "slug": "slug number ten12",
+                "price": 2000,
+                "description": "description for the tenth12 item",
+                "__v": 0
+            }
+        ]
+    }
+}
+ *
+ * @apiError isEmpty The collection of the Users is empty.
+ * @apiError AccessDenied Users does not have the permissions for this route.
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 403 AccessDenied
+ *     {
+ *       "message": "access denied",
+ *     }
+ */
 
 module.exports.getAllUsers = async (req, res) => {
   const users = await User.find();
@@ -16,6 +64,44 @@ module.exports.getAllUsers = async (req, res) => {
   });
 };
 
+/**
+ * @api {get} /users/:id Request the information about specific user
+ * @apiName GetUser
+ * @apiGroup Users
+ *
+ * @apiParam {Number} id Users unique ID.
+ *
+ * @apiSuccess {String} name name of the User.
+ * @apiSuccess {String} email  email of the User.
+ * @apiSuccess {String} password  password of the User.
+ * @apiSuccess {String} role  role of the User.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *  {
+    "status": "success",
+    "data": {
+        {
+            "_id": "6110ebbeb030da6d0cdd9b1a",
+            "title": "Item number ten",
+            "slug": "slug number ten",
+            "price": 1000,
+            "description": "description for the tenth item",
+            "__v": 0
+        }
+    }
+}
+ *
+ * @apiError notFound In the collection does not exist an user with this id.
+ * @apiError AccessDenied Users does not have the permissions for this route.
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 403 AccessDenied
+ *     {
+ *       "message": "access denied",
+ *     }
+ */
+
 module.exports.getUser = async (req, res) => {
   // eslint-disable-next-line no-underscore-dangle
   const user = await User.findOne({ _id: req.params.id });
@@ -26,12 +112,36 @@ module.exports.getUser = async (req, res) => {
   });
 };
 
+/**
+ * @api {delete} /users/:id Request User information
+ * @apiName DeleteUser
+ * @apiGroup Users
+ *
+ * @apiParam {Number} id Users unique ID.
+ * *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *  {
+    "status": "success",
+    "message": "deleted",
+    }
+}
+ *
+ * @apiError notFound The collection of the Users does not have a record with this idy.
+ * @apiError AccessDenied Users does not have the permissions for this route.
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 403 AccessDenied
+ *     {
+ *       "message": "access denied",
+ *     }
+ */
+
 module.exports.deleteUser = async (req, res) => {
   // eslint-disable-next-line no-underscore-dangle
   if (req.role === 'admin' || req.params._id === req.user_id) {
     await User.deleteOne({ _id: req.body.id });
 
-    await jwt.e;
     return res.status(200).json({
       status: 'success',
     });
@@ -40,6 +150,36 @@ module.exports.deleteUser = async (req, res) => {
     message: 'access denied',
   });
 };
+
+/**
+ * @api {post} /users/:id Request User information
+ * @apiName GetUsers
+ * @apiGroup Users
+ *
+ * @apiParam {Number} id Users unique ID.
+ *
+ * @apiSuccess {String} name name of the User.
+ * @apiSuccess {String} email  email of the User.
+ * @apiSuccess {String} password  password of the User.
+ * @apiSuccess {String} role  role of the User.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *  {
+    "status": "success",
+    "message": "updated",
+    }
+}
+ *
+ * @apiError notFound there are no records with this id.
+ * @apiError AccessDenied Users does not have the permissions for this route.
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 400 Not Found
+ *     {
+ *       "message": "access denied",
+ *     }
+ */
 
 module.exports.resetPass = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });

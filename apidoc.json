@@ -1,0 +1,7 @@
+{
+  "name": "udemyApi",
+  "version": "0.1.0",
+  "description": "apiDoc udemyApi documentation",
+  "title": "documentation for an api created with apidoc",
+  "url" : "https://api.github.com/v1"
+}
