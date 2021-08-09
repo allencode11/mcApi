@@ -6,7 +6,7 @@ const User = require('../models/userModel');
 module.exports.register = async (req, res) => {
   try {
     // Get user input
-    const { name, email, password, photo, passwordConfirm } = req.body;
+    const { name, email, password, role, photo, passwordConfirm } = req.body;
 
     // Validate user input
     if (!(email && password && passwordConfirm && name)) {
@@ -20,7 +20,6 @@ module.exports.register = async (req, res) => {
     // Validate if user exist in our database
     const oldUser = await User.findOne({ email });
 
-    console.log('1');
     if (oldUser) {
       return res.status(409).send('User Already Exist. Please Login');
     }
@@ -32,9 +31,9 @@ module.exports.register = async (req, res) => {
     const user = await User.create({
       name,
       photo,
+      role,
       email: email.toLowerCase(), // sanitize: convert email to lowercase
       password: encryptedPassword,
-      passwordConfirm,
     });
 
     // Create token
@@ -51,7 +50,6 @@ module.exports.register = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-  // Our register logic ends here
 };
 
 module.exports.signin = async (req, res) => {
@@ -88,7 +86,6 @@ module.exports.signin = async (req, res) => {
   } catch (err) {
     console.log(err);
   }
-  // Our register logic ends here
 };
 
 module.exports.logout = async (req, res) => {

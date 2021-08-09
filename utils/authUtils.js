@@ -7,6 +7,7 @@ const authUtils = () => {};
 // function for verifying if the user use a valid token
 // eslint-disable-next-line consistent-return
 authUtils.isAuthenticated = function (req, res, next) {
+  console.log(req);
   if (req.headers.authorization) {
     const token = req.headers.authorization;
     console.log(token);
@@ -21,13 +22,13 @@ authUtils.isAuthenticated = function (req, res, next) {
 
       // eslint-disable-next-line consistent-return
       jwt.verify(jwtToken, process.env.TOKEN_KEY, (err, parsedToken) => {
+        console.log(parsedToken);
         if (Date.now() >= parsedToken.exp * 1000) {
           return res.status(400).json({ message: 'token has expired' });
         }
         req.role = parsedToken.role;
         req.user_id = parsedToken.id;
         next();
-        // return res.status(200).json({message: 'token is valid'});
       });
     } else {
       return res.status(403).json({
@@ -42,12 +43,11 @@ authUtils.isVendor = function (req, res, next) {
   if (req.role === 'vendor') {
     return next();
   }
-  return res.send(403).send('not a vendor');
+  return res.status(403).json('not a vendor');
 };
 
 authUtils.isAdmin = function (req, res, next) {
   if (req.role === 'admin') {
-    console.log('is admin');
     return next();
   }
   return res.status(403).json({ message: 'not an admin' });
@@ -57,14 +57,14 @@ authUtils.isClient = function (req, res, next) {
   if (req.role === 'client') {
     return next();
   }
-  return res.send(403).send('not an client');
+  return res.status(403).json('not an client');
 };
 
 authUtils.isNotClient = function (req, res, next) {
-  if (req.role !== 'client') {
-    return next();
+  if (req.role === 'client') {
+    return res.send(403);
   }
-  return res.send(403);
+  return next();
 };
 
 // export the module

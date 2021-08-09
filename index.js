@@ -9,7 +9,6 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
-const jwt = require('jsonwebtoken');
 
 // connecting with routers
 const itemRouter = require('./routes/itemRoutes');
@@ -18,7 +17,7 @@ const userRouter = require('./routes/userRoutes');
 // using environments
 dotenv.config();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 // creating the app
 const app = express();
@@ -41,19 +40,4 @@ app.use('/users', userRouter);
 
 app.listen(port, () => {
   console.log(`listening on port ${port}`);
-});
-
-app.post('/api/login', (req, res) => {
-  const user = {
-    email: 'alina.enache@gmail.com',
-    name: 'alina',
-    photo: '',
-    password: '1234pass',
-  };
-
-  jwt.sign({ user }, 'secretkey', (err, token) => {
-    res.json({
-      token,
-    });
-  });
 });

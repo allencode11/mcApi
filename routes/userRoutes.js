@@ -16,14 +16,13 @@ router.post('/login', authController.signin);
 router.post('/logout', authUtil.isAuthenticated, authController.logout);
 
 // Admin can get an user and create a new one
-router.route('/').get(authUtil.isAuthenticated, authUtil.isAdmin().getAllUsers);
+router.route('/').get(authUtil.isAuthenticated, authUtil.isAdmin, userController.getAllUsers);
 
 // Admin can update, delete and get an user
 router
   .route('/:id')
-  .patch(authUtil.isAuthenticated, authUtil.isAdmin, userController.updateUser)
   .get(authUtil.isAuthenticated, authUtil.isAdmin, userController.getUser)
   .delete(authUtil.isAuthenticated, userController.deleteUser)
-  .post(authUtil.isAuthenticated, userController.deleteUser); // for reset password
+  .post(authUtil.isAuthenticated, userController.resetPass); // for reset password
 
 module.exports = router;
