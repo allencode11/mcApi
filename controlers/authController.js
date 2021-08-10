@@ -8,26 +8,35 @@ const User = require('../models/userModel');
  * @apiName register
  * @apiGroup Users
  *
- * @apiSuccess {String} name name of the User.
- * @apiSuccess {String} email  email of the User.
- * @apiSuccess {String} password  password of the User.
- * @apiSuccess {String} role  role of the User.
- * @apiSuccess {String} token  token for new User.
+ * @apiSuccess {String} name Name of the User.
+ * @apiSuccess {String} email  Email of the User.
+ * @apiSuccess {String} password  Password of the User.
+ * @apiSuccess {String} role  Role of the User.
+ * @apiSuccess {String} passwordConfirm  Confirmation for the password entered earlier.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *  {
-    "status": "success",
-    "message": "created",
-    }
+    "user": {
+        "_id": "61123617167291279fcedfd3",
+        "name": "clientfor deleting3",
+        "photo": "adds",
+        "role": "client",
+        "email": "alina.enache5214@gmail.com",
+        "password": "$2a$10$vVo8GmXYvgS5Nm12.wl3UuDYm17C.1GdjzFF4P0sAWdE9ysvcoR7a",
+        "__v": 0
+    },
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjExMjM2MTcxNjcyOTEyNzlmY2VkZmQzIiwiZW1haWwiOiJhbGluYS5lbmFjaGU1MjE0QGdtYWlsLmNvbSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE2Mjg1ODM0NDcsImV4cCI6MTYyODU5MDY0N30.PUF3RCYCBRPlHO8LVS1Sazg3v9wB-FevN2DFkYc05lI"
+}
  *
  * @apiError AccessDenied Users does not have the permissions for this route.
+ * @apiError ItemExists Am item with this parameters already exists in the database.
  *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 403 AccessDenied
  *     {
             "message": "not an admin"
-      }
+       }
  */
 
 // eslint-disable-next-line consistent-return
@@ -44,8 +53,8 @@ module.exports.register = async (req, res) => {
     if (password !== passwordConfirm) {
       return res.status(400).send('password does not match');
     }
+
     // check if user already exist
-    // Validate if user exist in our database
     const oldUser = await User.findOne({ email });
 
     if (oldUser) {
@@ -55,7 +64,7 @@ module.exports.register = async (req, res) => {
     // Encrypt user password
     const encryptedPassword = await bcrypt.hash(password, 10);
 
-    // Create user in our database
+    // Create new user in our database
     const user = await User.create({
       name,
       photo,
@@ -71,7 +80,7 @@ module.exports.register = async (req, res) => {
       expiresIn: '2h',
     });
 
-    // return new user
+    // return new user and his token
     return res.status(201).json({
       user,
       token,
@@ -83,14 +92,11 @@ module.exports.register = async (req, res) => {
 
 /**
  * @api {post} /users/login Authenticate an user
- * @apiName signin
+ * @apiName signIn
  * @apiGroup Users
  *
- * @apiSuccess {String} name name of the User.
  * @apiSuccess {String} email  email of the User.
  * @apiSuccess {String} password  password of the User.
- * @apiSuccess {String} role  role of the User.
- * @apiSuccess {String} token  token for new User.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
@@ -118,7 +124,7 @@ module.exports.register = async (req, res) => {
             "message": "not found"
       }
  */
-module.exports.signin = async (req, res) => {
+module.exports.signIn = async (req, res) => {
   try {
     // Get user input
     const { email, password } = req.body;
@@ -130,10 +136,9 @@ module.exports.signin = async (req, res) => {
     // Validate if user exist in our database
     const user = await User.findOne({ email });
 
-    console.log(user, password);
-
     if (user && (await bcrypt.compare(password, user.password))) {
       // Create token
+      // eslint-disable-next-line no-underscore-dangle
       const token = jwt.sign({ user_id: user._id, email, role: user.role }, process.env.TOKEN_KEY, {
         expiresIn: '2h',
       });
@@ -142,10 +147,7 @@ module.exports.signin = async (req, res) => {
       user.token = token;
 
       // user
-      res.status(200).json({
-        user,
-        token,
-      });
+      res.status(200).json({ user, token });
     } else {
       res.status(400).send('Invalid Credentials');
     }
@@ -154,29 +156,12 @@ module.exports.signin = async (req, res) => {
   }
 };
 
-/**
- * @api {get} /users/logout Logout an user
- * @apiName logout
- * @apiGroup Users
- *
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- *  {
-    "message": "Successfully lodged out",
-    }
- *
- * @apiError couldNotDestroyToken Could not destroy jwt token.
- *
- * @apiErrorExample Error-Response:
- *     HTTP/1.1 400 error
- *     {
-            "message": "Could not destroy jwt token",
-      }
- */
-
+/*
 module.exports.logout = async (req, res) => {
+
   // invalidate the token
 
   // redirect to home page
   res.status(200).json({ message: 'logout successfully' }).redirect('/');
 };
+*/

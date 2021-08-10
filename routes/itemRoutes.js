@@ -3,6 +3,7 @@ const express = require('express');
 const itemController = require('../controlers/itemController');
 const authUtils = require('../utils/authUtils');
 
+// create the router
 const router = express.Router();
 
 // get an item and create a new one
@@ -18,4 +19,5 @@ router
   .patch(authUtils.isAuthenticated, authUtils.isNotClient, itemController.createItem)
   .get(authUtils.isAuthenticated, itemController.getItem);
 
+// export router from the module
 module.exports = router;

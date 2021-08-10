@@ -6,6 +6,11 @@ const Item = require('../models/itemModel');
  * @apiName createItem
  * @apiGroup Item
  *
+ * @apiSuccess {String} title Title of the User.
+ * @apiSuccess {String} slug  Slug of the User.
+ * @apiSuccess {Number} price  Price of the User.
+ * @apiSuccess {String} description  Description of the User.
+ *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *  {
@@ -14,6 +19,7 @@ const Item = require('../models/itemModel');
     }
  *
  * @apiError AccessDenied User does not have the permission for adding new items
+ * @apiError alreadyExists An item with this parameters already exists in the database
  *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 400 accessDenied
@@ -27,29 +33,21 @@ module.exports.createItem = async (req, res) => {
   const item = await Item.findOne({ title: itemObj.title });
 
   if (item) {
-    res.send({
-      status: 'error',
-      message: 'item with this title already exists',
-    });
-  } else {
-    item.owner = req.email;
-    item.title = itemObj.title;
-    item.slug = itemObj.slug;
-    item.price = itemObj.price;
-    item.description = itemObj.description;
-
-    await item.save((err) => {
-      if (err) {
-        console.error(err);
-        console.log('error while saving');
-      }
-    });
-
-    res.send({
-      status: 'success',
-      message: 'Created',
-    });
+    return res.status(400).json({ message: 'item with this title already exists' });
   }
+  item.owner = req.email;
+  item.title = itemObj.title;
+  item.slug = itemObj.slug;
+  item.price = itemObj.price;
+  item.description = itemObj.description;
+
+  await item.save((err) => {
+    if (err) {
+      return res.status(400).json({ message: 'error while saving' });
+    }
+  });
+
+  res.status(200).json({ status: 'success', message: 'Created' });
 };
 
 /**
@@ -57,7 +55,7 @@ module.exports.createItem = async (req, res) => {
  * @apiName deleteItem
  * @apiGroup Item
  *
- * @apiParam {Number} id Users unique ID.
+ * @apiParam {Number} id items unique ID.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
@@ -211,7 +209,7 @@ module.exports.getItem = async (req, res) => {
  * @apiName updateItem
  * @apiGroup Item
  *
- * @apiParam {Number} id Users unique ID.
+ * @apiParam {Number} id Item unique ID.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
@@ -222,6 +220,7 @@ module.exports.getItem = async (req, res) => {
  *
  * @apiError notfound There are no records with this fields in the database
  * @apiError accessDenied User does not have the permission for this action
+ * @apiError couldNotSave Item could not be saved in the database
  *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 400 notFound

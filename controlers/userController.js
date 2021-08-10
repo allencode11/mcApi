@@ -7,11 +7,6 @@ const User = require('../models/userModel');
  * @api {get} /users Request User information
  * @apiName GetAllUsers
  * @apiGroup Users
-
- * @apiSuccess {String} name name of the User.
- * @apiSuccess {String} email  email of the User.
- * @apiSuccess {String} password  password of the User.
- * @apiSuccess {String} role  role of the User.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
@@ -53,15 +48,16 @@ const User = require('../models/userModel');
 module.exports.getAllUsers = async (req, res) => {
   const users = await User.find();
 
-  console.log(users);
-
-  res.status(200).json({
-    status: 'success',
-    results: users.length,
-    data: {
-      users,
-    },
-  });
+  if (users) {
+    return res.status(200).json({
+      status: 'success',
+      results: users.length,
+      data: {
+        users,
+      },
+    });
+  }
+  return res.status(400).json({ message: 'collection is empty' });
 };
 
 /**
@@ -69,7 +65,7 @@ module.exports.getAllUsers = async (req, res) => {
  * @apiName GetUser
  * @apiGroup Users
  *
- * @apiParam {Number} id Users unique ID.
+ * @apiParam {Number} id User unique ID.
  *
  * @apiSuccess {String} name name of the User.
  * @apiSuccess {String} email  email of the User.
@@ -113,7 +109,7 @@ module.exports.getUser = async (req, res) => {
 };
 
 /**
- * @api {delete} /users/:id Request User information
+ * @api {delete} /users/:id Delete an account
  * @apiName DeleteUser
  * @apiGroup Users
  *
@@ -144,10 +140,7 @@ module.exports.deleteUser = async (req, res) => {
   if (user) {
     if (req.role === 'admin' || req.params.id === req.body.id) {
       await User.deleteOne({ _id: req.body.id });
-
-      return res.status(200).json({
-        status: 'success',
-      });
+      return res.status(200).json({ status: 'success', message: 'deleted' });
     }
 
     return res.status(403).json({
@@ -160,11 +153,13 @@ module.exports.deleteUser = async (req, res) => {
 };
 
 /**
- * @api {post} /users/:id Request User information
+ * @api {post} /users/:id Reset user password
  * @apiName GetUsers
  * @apiGroup Users
  *
- * @apiParam {Number} id Users unique ID.
+ * @apiParam {String} email Email of the account that you want to change password.
+ * @apiParam {String} password new password.
+ * @apiParam {String} passwordConfirm Confirm the password entered earlier.
  *
  * @apiSuccess {String} name name of the User.
  * @apiSuccess {String} email  email of the User.
@@ -196,10 +191,6 @@ module.exports.resetPass = async (req, res) => {
     return res.status(400).json({ message: 'this email is not valid' });
   }
 
-  console.log(req.params);
-  // eslint-disable-next-line no-underscore-dangle
-  console.log(user._id);
-
   // eslint-disable-next-line no-underscore-dangle
   if (req.role === 'admin' || user._id == req.params.id) {
     if (req.body.password === req.body.passwordConfirm) {
@@ -219,10 +210,7 @@ module.exports.resetPass = async (req, res) => {
         expiresIn: '2h',
       });
 
-      return res.status(201).json({
-        user,
-        token,
-      });
+      return res.status(201).json({ user, token });
     }
     return res.status(400).json({ message: 'passwords does not match' });
   }
