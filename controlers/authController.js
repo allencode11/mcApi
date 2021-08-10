@@ -105,7 +105,9 @@ module.exports.register = async (req, res) => {
         "passwordConfirm": "$2a$10$FMmhUf1lpQ7fREORyl/BueBmSdMR02RUpoMi76FoSvGaw5qc6b/CO",
         "__v": 0
     },
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjExMTBmNzBjMGZkNzY4NTg1YTNiMmU5IiwiZW1haWwiOiJhbGluYS5lbmFjaGUxQGdtYWlsLmNvbSIsInJvbGUiOiJ2ZW5kb3IiLCJpYXQiOjE2Mjg1MDg0MTAsImV4cCI6MTYyODUxNTYxMH0.pLqw4LB4VGQsCEI45vIdk77QLf87cQMIdibdml4vB2o"
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+    eyJ1c2VyX2lkIjoiNjExMTBmNzBjMGZkNzY4NTg1YTNiMmU5IiwiZW1haWwiOiJhbGluYS5lbmFjaGUxQGdtYWlsLmNvbSIsInJvbGUiOiJ2ZW5kb3IiLCJpYXQiOjE2Mjg1MDg0MTAsImV4cCI6MTYyODUxNTYxMH0.
+    pLqw4LB4VGQsCEI45vIdk77QLf87cQMIdibdml4vB2o"
 }
  *
  * @apiError notFound Could not find a user with this credentials.

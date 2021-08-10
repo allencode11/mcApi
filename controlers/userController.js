@@ -139,15 +139,23 @@ module.exports.getUser = async (req, res) => {
 
 module.exports.deleteUser = async (req, res) => {
   // eslint-disable-next-line no-underscore-dangle
-  if (req.role === 'admin' || req.params._id === req.user_id) {
-    await User.deleteOne({ _id: req.body.id });
+  const user = await User.findOne({ _id: req.body.id });
 
-    return res.status(200).json({
-      status: 'success',
+  if (user) {
+    if (req.role === 'admin' || req.params.id === req.body.id) {
+      await User.deleteOne({ _id: req.body.id });
+
+      return res.status(200).json({
+        status: 'success',
+      });
+    }
+
+    return res.status(403).json({
+      message: 'access denied',
     });
   }
   return res.status(403).json({
-    message: 'access denied',
+    message: 'user could not be found',
   });
 };
 

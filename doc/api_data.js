@@ -709,7 +709,7 @@ define({ "api": [
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n {\n    \"user\": {\n        \"_id\": \"61110f70c0fd768585a3b2e9\",\n        \"name\": \"vendor\",\n        \"photo\": \"adds\",\n        \"role\": \"vendor\",\n        \"email\": \"alina.enache1@gmail.com\",\n        \"password\": \"$2a$10$FMmhUf1lpQ7fREORyl/BueBmSdMR02RUpoMi76FoSvGaw5qc6b/CO\",\n        \"passwordConfirm\": \"$2a$10$FMmhUf1lpQ7fREORyl/BueBmSdMR02RUpoMi76FoSvGaw5qc6b/CO\",\n        \"__v\": 0\n    },\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjExMTBmNzBjMGZkNzY4NTg1YTNiMmU5IiwiZW1haWwiOiJhbGluYS5lbmFjaGUxQGdtYWlsLmNvbSIsInJvbGUiOiJ2ZW5kb3IiLCJpYXQiOjE2Mjg1MDg0MTAsImV4cCI6MTYyODUxNTYxMH0.pLqw4LB4VGQsCEI45vIdk77QLf87cQMIdibdml4vB2o\"\n}",
+          "content": "    HTTP/1.1 200 OK\n {\n    \"user\": {\n        \"_id\": \"61110f70c0fd768585a3b2e9\",\n        \"name\": \"vendor\",\n        \"photo\": \"adds\",\n        \"role\": \"vendor\",\n        \"email\": \"alina.enache1@gmail.com\",\n        \"password\": \"$2a$10$FMmhUf1lpQ7fREORyl/BueBmSdMR02RUpoMi76FoSvGaw5qc6b/CO\",\n        \"passwordConfirm\": \"$2a$10$FMmhUf1lpQ7fREORyl/BueBmSdMR02RUpoMi76FoSvGaw5qc6b/CO\",\n        \"__v\": 0\n    },\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.\n    eyJ1c2VyX2lkIjoiNjExMTBmNzBjMGZkNzY4NTg1YTNiMmU5IiwiZW1haWwiOiJhbGluYS5lbmFjaGUxQGdtYWlsLmNvbSIsInJvbGUiOiJ2ZW5kb3IiLCJpYXQiOjE2Mjg1MDg0MTAsImV4cCI6MTYyODUxNTYxMH0.\n    pLqw4LB4VGQsCEI45vIdk77QLf87cQMIdibdml4vB2o\"\n}",
           "type": "json"
         }
       ]
