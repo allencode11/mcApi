@@ -6,10 +6,10 @@ const Item = require('../models/itemModel');
  * @apiName createItem
  * @apiGroup Item
  *
- * @apiSuccess {String} title Title of the User.
- * @apiSuccess {String} slug  Slug of the User.
- * @apiSuccess {Number} price  Price of the User.
- * @apiSuccess {String} description  Description of the User.
+ * @apiParam {String} title Title of the User.
+ * @apiParam {String} slug  Slug of the User.
+ * @apiParam {Number} price  Price of the User.
+ * @apiParam {String} description  Description of the User.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK

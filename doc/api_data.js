@@ -5,6 +5,40 @@ define({ "api": [
     "title": "create a new item",
     "name": "createItem",
     "group": "Item",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "title",
+            "description": "<p>Title of the User.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "slug",
+            "description": "<p>Slug of the User.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "price",
+            "description": "<p>Price of the User.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "description",
+            "description": "<p>Description of the User.</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "examples": [
         {
@@ -22,6 +56,12 @@ define({ "api": [
             "optional": false,
             "field": "AccessDenied",
             "description": "<p>User does not have the permission for adding new items</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "alreadyExists",
+            "description": "<p>An item with this parameters already exists in the database</p>"
           }
         ]
       },
@@ -51,7 +91,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>Users unique ID.</p>"
+            "description": "<p>items unique ID.</p>"
           }
         ]
       }
@@ -191,7 +231,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>Users unique ID.</p>"
+            "description": "<p>Item unique ID.</p>"
           }
         ]
       }
@@ -219,6 +259,12 @@ define({ "api": [
             "optional": false,
             "field": "accessDenied",
             "description": "<p>User does not have the permission for this action</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "couldNotSave",
+            "description": "<p>Item could not be saved in the database</p>"
           }
         ]
       },
@@ -237,7 +283,7 @@ define({ "api": [
   {
     "type": "delete",
     "url": "/users/:id",
-    "title": "Request User information",
+    "title": "Delete an account",
     "name": "DeleteUser",
     "group": "Users",
     "parameter": {
@@ -298,38 +344,6 @@ define({ "api": [
     "name": "GetAllUsers",
     "group": "Users",
     "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>name of the User.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "email",
-            "description": "<p>email of the User.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "password",
-            "description": "<p>password of the User.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "role",
-            "description": "<p>role of the User.</p>"
-          }
-        ]
-      },
       "examples": [
         {
           "title": "Success-Response:",
@@ -381,7 +395,7 @@ define({ "api": [
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>Users unique ID.</p>"
+            "description": "<p>User unique ID.</p>"
           }
         ]
       }
@@ -459,7 +473,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/users/:id",
-    "title": "Request User information",
+    "title": "Reset user password",
     "name": "GetUsers",
     "group": "Users",
     "parameter": {
@@ -467,10 +481,24 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "Number",
+            "type": "String",
             "optional": false,
-            "field": "id",
-            "description": "<p>Users unique ID.</p>"
+            "field": "email",
+            "description": "<p>Email of the account that you want to change password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>new password.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "passwordConfirm",
+            "description": "<p>Confirm the password entered earlier.</p>"
           }
         ]
       }
@@ -546,93 +574,57 @@ define({ "api": [
     "groupTitle": "Users"
   },
   {
-    "type": "get",
-    "url": "/users/logout",
-    "title": "Logout an user",
-    "name": "logout",
-    "group": "Users",
-    "success": {
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "   HTTP/1.1 200 OK\n{\n   \"message\": \"Successfully lodged out\",\n   }",
-          "type": "json"
-        }
-      ]
-    },
-    "error": {
-      "fields": {
-        "Error 4xx": [
-          {
-            "group": "Error 4xx",
-            "optional": false,
-            "field": "couldNotDestroyToken",
-            "description": "<p>Could not destroy jwt token.</p>"
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Error-Response:",
-          "content": "HTTP/1.1 400 error\n{\n        \"message\": \"Could not destroy jwt token\",\n  }",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "/home/alina/WebstormProjects/udemyApi/controlers/authController.js",
-    "groupTitle": "Users"
-  },
-  {
     "type": "post",
     "url": "/users/register",
     "title": "Register a new user",
     "name": "register",
     "group": "Users",
-    "success": {
+    "parameter": {
       "fields": {
-        "Success 200": [
+        "Parameter": [
           {
-            "group": "Success 200",
+            "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "name",
-            "description": "<p>name of the User.</p>"
+            "description": "<p>Name of the User.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "email",
-            "description": "<p>email of the User.</p>"
+            "description": "<p>Email of the User.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "password",
-            "description": "<p>password of the User.</p>"
+            "description": "<p>Password of the User.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "role",
-            "description": "<p>role of the User.</p>"
+            "description": "<p>Role of the User.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "Parameter",
             "type": "String",
             "optional": false,
-            "field": "token",
-            "description": "<p>token for new User.</p>"
+            "field": "passwordConfirm",
+            "description": "<p>Confirmation for the password entered earlier.</p>"
           }
         ]
-      },
+      }
+    },
+    "success": {
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "   HTTP/1.1 200 OK\n{\n   \"status\": \"success\",\n   \"message\": \"created\",\n   }",
+          "content": "    HTTP/1.1 200 OK\n {\n    \"user\": {\n        \"_id\": \"61123617167291279fcedfd3\",\n        \"name\": \"clientfor deleting3\",\n        \"photo\": \"adds\",\n        \"role\": \"client\",\n        \"email\": \"alina.enache5214@gmail.com\",\n        \"password\": \"$2a$10$vVo8GmXYvgS5Nm12.wl3UuDYm17C.1GdjzFF4P0sAWdE9ysvcoR7a\",\n        \"__v\": 0\n    },\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjExMjM2MTcxNjcyOTEyNzlmY2VkZmQzIiwiZW1haWwiOiJhbGluYS5lbmFjaGU1MjE0QGdtYWlsLmNvbSIsInJvbGUiOiJjbGllbnQiLCJpYXQiOjE2Mjg1ODM0NDcsImV4cCI6MTYyODU5MDY0N30.PUF3RCYCBRPlHO8LVS1Sazg3v9wB-FevN2DFkYc05lI\"\n}",
           "type": "json"
         }
       ]
@@ -645,13 +637,19 @@ define({ "api": [
             "optional": false,
             "field": "AccessDenied",
             "description": "<p>Users does not have the permissions for this route.</p>"
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "ItemExists",
+            "description": "<p>Am item with this parameters already exists in the database.</p>"
           }
         ]
       },
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "HTTP/1.1 403 AccessDenied\n{\n        \"message\": \"not an admin\"\n  }",
+          "content": "HTTP/1.1 403 AccessDenied\n{\n        \"message\": \"not an admin\"\n   }",
           "type": "json"
         }
       ]
@@ -664,48 +662,29 @@ define({ "api": [
     "type": "post",
     "url": "/users/login",
     "title": "Authenticate an user",
-    "name": "signin",
+    "name": "signIn",
     "group": "Users",
-    "success": {
+    "parameter": {
       "fields": {
-        "Success 200": [
+        "Parameter": [
           {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "name",
-            "description": "<p>name of the User.</p>"
-          },
-          {
-            "group": "Success 200",
+            "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "email",
             "description": "<p>email of the User.</p>"
           },
           {
-            "group": "Success 200",
+            "group": "Parameter",
             "type": "String",
             "optional": false,
             "field": "password",
             "description": "<p>password of the User.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "role",
-            "description": "<p>role of the User.</p>"
-          },
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "token",
-            "description": "<p>token for new User.</p>"
           }
         ]
-      },
+      }
+    },
+    "success": {
       "examples": [
         {
           "title": "Success-Response:",

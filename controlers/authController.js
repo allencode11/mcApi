@@ -8,11 +8,11 @@ const User = require('../models/userModel');
  * @apiName register
  * @apiGroup Users
  *
- * @apiSuccess {String} name Name of the User.
- * @apiSuccess {String} email  Email of the User.
- * @apiSuccess {String} password  Password of the User.
- * @apiSuccess {String} role  Role of the User.
- * @apiSuccess {String} passwordConfirm  Confirmation for the password entered earlier.
+ * @apiParam {String} name Name of the User.
+ * @apiParam {String} email  Email of the User.
+ * @apiParam {String} password  Password of the User.
+ * @apiParam {String} role  Role of the User.
+ * @apiParam {String} passwordConfirm  Confirmation for the password entered earlier.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
@@ -95,8 +95,8 @@ module.exports.register = async (req, res) => {
  * @apiName signIn
  * @apiGroup Users
  *
- * @apiSuccess {String} email  email of the User.
- * @apiSuccess {String} password  password of the User.
+ * @apiParam {String} email  email of the User.
+ * @apiParam {String} password  password of the User.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
