@@ -196,13 +196,23 @@ module.exports.resetPass = async (req, res) => {
     return res.status(400).json({ message: 'this email is not valid' });
   }
 
+  console.log(req.params);
   // eslint-disable-next-line no-underscore-dangle
-  if (req.role === 'admin' || req.user_id === req.params._id) {
+  console.log(user._id);
+
+  // eslint-disable-next-line no-underscore-dangle
+  if (req.role === 'admin' || user._id == req.params.id) {
     if (req.body.password === req.body.passwordConfirm) {
       const encryptedPassword = await bcrypt.hash(req.body.password, 10);
       user.password = encryptedPassword;
 
-      user.save();
+      User.updateOne(
+        { email: req.body.email },
+        {
+          $set: { password: encryptedPassword, passwordConfirm: encryptedPassword },
+          $currentDate: { lastModified: true },
+        },
+      );
 
       // eslint-disable-next-line no-underscore-dangle,max-len
       const token = await jwt.sign({ user_id: user._id, email: user.email, role: user.role }, process.env.TOKEN_KEY, {
