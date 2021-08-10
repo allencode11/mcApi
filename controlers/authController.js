@@ -175,12 +175,8 @@ module.exports.signin = async (req, res) => {
  */
 
 module.exports.logout = async (req, res) => {
-  const newUser = await User.create(req.body);
+  // invalidate the token
 
-  res.status(201).json({
-    status: 'success',
-    data: {
-      user: newUser,
-    },
-  });
+  // redirect to home page
+  res.status(200).json({ message: 'logout successfully' }).redirect('/');
 };
