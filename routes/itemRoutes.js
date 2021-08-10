@@ -16,7 +16,7 @@ router
 router
   .route('/:id')
   .delete(authUtils.isAuthenticated, authUtils.isNotClient, itemController.deleteItem)
-  .patch(authUtils.isAuthenticated, authUtils.isNotClient, itemController.createItem)
+  .patch(authUtils.isAuthenticated, authUtils.isNotClient, itemController.updateItem)
   .get(authUtils.isAuthenticated, itemController.getItem);
 
 // export router from the module

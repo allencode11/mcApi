@@ -21,6 +21,7 @@ authUtils.isAuthenticated = (req, res, next) => {
       // eslint-disable-next-line consistent-return
       jwt.verify(jwtToken, process.env.TOKEN_KEY, (err, parsedToken) => {
         req.role = parsedToken.role;
+        req.email = parsedToken.email;
         req.user_id = parsedToken.id;
         next();
       });

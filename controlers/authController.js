@@ -69,14 +69,15 @@ module.exports.register = async (req, res) => {
       name,
       photo,
       role,
-      email: email.toLowerCase(), // sanitize: convert email to lowercase
+      email: email.toLowerCase(),
       password: encryptedPassword,
       passwordConfirm: encryptedPassword,
     });
 
+    console.log(user);
     // Create token
     // eslint-disable-next-line no-underscore-dangle,max-len
-    const token = await jwt.sign({ user_id: user._id, email: user.email, role: user.role }, process.env.TOKEN_KEY, {
+    const token = await jwt.sign({ user_id: user.id, email: user.email, role: user.role }, process.env.TOKEN_KEY, {
       expiresIn: '2h',
     });
 

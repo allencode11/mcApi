@@ -135,11 +135,11 @@ module.exports.getUser = async (req, res) => {
 
 module.exports.deleteUser = async (req, res) => {
   // eslint-disable-next-line no-underscore-dangle
-  const user = await User.findOne({ _id: req.body.id });
+  const user = await User.findOne({ _id: req.params.id });
 
   if (user) {
     if (req.role === 'admin' || req.params.id === req.body.id) {
-      await User.deleteOne({ _id: req.body.id });
+      await User.deleteOne({ _id: req.params.id });
       return res.status(200).json({ status: 'success', message: 'deleted' });
     }
 

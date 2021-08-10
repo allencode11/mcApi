@@ -30,24 +30,25 @@ const Item = require('../models/itemModel');
 module.exports.createItem = async (req, res) => {
   const itemObj = req.body;
 
-  const item = await Item.findOne({ title: itemObj.title });
+  let item = await Item.findOne({ title: itemObj.title });
 
   if (item) {
     return res.status(400).json({ message: 'item with this title already exists' });
   }
-  item.owner = req.email;
-  item.title = itemObj.title;
-  item.slug = itemObj.slug;
-  item.price = itemObj.price;
-  item.description = itemObj.description;
+  item = new Item({
+    title: itemObj.title,
+    owner: req.email,
+    slug: itemObj.slug,
+    price: itemObj.price,
+    description: itemObj.description,
+  });
 
   await item.save((err) => {
     if (err) {
-      return res.status(400).json({ message: 'error while saving' });
+      return res.status(400).json({ status: 'err', message: 'Some field are not unique' });
     }
+    res.status(200).json({ status: 'success', message: 'Created' });
   });
-
-  res.status(200).json({ status: 'success', message: 'Created' });
 };
 
 /**
@@ -73,10 +74,11 @@ module.exports.createItem = async (req, res) => {
       }
  */
 module.exports.deleteItem = async (req, res) => {
-  const item = Item.findOne({ _id: req.params.id });
+  const item = await Item.findOne({ _id: req.params.id });
+  console.log(item);
 
   if (item) {
-    if (item.owner === req.user_id) {
+    if (item.owner === req.email || req.role === 'admin') {
       await Item.deleteOne({ _id: req.params.id });
 
       res.status(200).json({
@@ -229,20 +231,24 @@ module.exports.getItem = async (req, res) => {
       }
  */
 module.exports.updateItem = async (req, res) => {
-  const itemToUpdate = Item.findOne({ _id: req.params.id });
+  const itemToUpdate = await Item.findOne({ _id: req.params.id });
 
-  if (itemToUpdate.owner === req.user_id) {
-    itemToUpdate.title = req.title;
-    itemToUpdate.slug = req.slug;
-    itemToUpdate.price = req.price;
-    itemToUpdate.description = req.description;
-
-    await itemToUpdate.save((err) => {
-      if (err) {
-        console.error(err);
-        console.log('error while updating');
-      }
-    });
+  console.log(req.params.id);
+  if (itemToUpdate.owner === req.email) {
+    await Item.updateOne(
+      // eslint-disable-next-line no-underscore-dangle
+      { _id: itemToUpdate._id },
+      {
+        $set: {
+          title: req.body.title,
+          owner: req.email,
+          slug: req.body.slug,
+          price: req.body.price,
+          description: req.body.description,
+        },
+        $currentDate: { lastModified: true },
+      },
+    );
 
     res.status(200).json({
       status: 'success',
@@ -251,7 +257,7 @@ module.exports.updateItem = async (req, res) => {
   } else {
     res.status(403).json({
       status: 'restricted',
-      message: 'you can not delete this item, because you are not its owner',
+      message: 'you can not update this item, because you are not its owner',
     });
   }
 };

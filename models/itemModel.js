@@ -8,7 +8,7 @@ const itemSchema = new mongoose.Schema({
   slug: { type: String, required: [true, 'this is an required field'] },
   price: {
     type: Number,
-    required: [true, 'An item con not have no price! if it is free please fill the blank with 0'],
+    required: [true, 'An item can not have no price! if it is free please fill the blank with 0'],
   },
   description: { type: String, unique: true },
 });
