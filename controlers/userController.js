@@ -192,7 +192,7 @@ module.exports.resetPass = async (req, res) => {
   }
 
   // eslint-disable-next-line no-underscore-dangle
-  if (req.role === 'admin' || user._id == req.params.id) {
+  if (req.role === 'admin' || user._id === req.params.id) {
     if (req.body.password === req.body.passwordConfirm) {
       const encryptedPassword = await bcrypt.hash(req.body.password, 10);
       user.password = encryptedPassword;
